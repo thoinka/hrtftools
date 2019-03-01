@@ -7,6 +7,7 @@ import click
 from scipy.io import wavfile
 from sweep import sweep
 
+
 @click.command()
 @click.option('-i', '--input', type=str, help='Input path.')
 @click.option('--duration', type=float, default=5.0,

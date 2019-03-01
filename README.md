@@ -9,6 +9,10 @@ The Python scripts contained in this repo aim to help with the calculation of HR
 * Some microphone with somewhat isotropic directivity (I use the microphone that comes with my Apple EarPods)
 * A computer that can record audio incl. some software to do the job (say, Audacity)
 * Some playback device that is not your computer (I use my iPhone)
+* Python 3 with
+	* `numpy`
+	* `scipy`
+	* `click`
 
 ### Methodology
 

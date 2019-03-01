@@ -29,24 +29,28 @@ def sweep(fmin, fmax, T, fs, log):
               help='Sample rate in Hz.')
 @click.option('--log/--lin', default=True,
               help='Whether to cast a logarithmic or linear sweep.')
-@click.option('--stereo', is_flag=True, default=False,
-              help='Whether or not to cast a stereo sweep.')
+@click.option('--channel', is_flag=True, default='m',
+              help='Either l for left, r for right or m for mono.')
 @click.option('--predelay', type=float, default=5.0,
               help='Predelay in seconds.')
 @click.option('-o', '--output', type=str,
               help='Output path.')
-def main(duration, fmin, fmax, fs, log, stereo, predelay, output):
+def main(duration, fmin, fmax, fs, log, channel, predelay, output):
     S = sweep(fmin, fmax, duration, fs, log)
     S_padded = np.hstack((np.zeros(int(fs * predelay)), S))
     S_padded = np.hstack((S_padded, S_padded))
-    if stereo:
-        out = (np.column_stack((
-                   np.hstack((S_padded, np.zeros_like(S_padded))),
-                   np.hstack((np.zeros_like(S_padded), S_padded))
-               )) * 2 ** 15).astype('int16')
+
+    if channel[0] == 'm':
+        out = (S_padded * 2 ** 15)
+    elif channel[0] == 'l':
+        out = (np.column_stack((S_padded, np.zeros_like(S_padded))) * 2 ** 15)
+    elif channel[0] == 'r':
+        out = (np.column_stack((np.zeros_like(S_padded), S_padded)) * 2 ** 15)
     else:
-        out = (S_padded * 2 ** 15).astype('int16')
-    wavfile.write(output, fs, out)
+        raise ValueError('Allowed values for channel: m, l, r')
+
+    wavfile.write(output, fs, out.astype('int16'))
+
 
 if __name__ == '__main__':
     main()

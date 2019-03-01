@@ -39,8 +39,10 @@ def main(input, right, left, output):
 	_, right = wavfile.read(right)
 	norm = max([np.max(np.abs(left)), np.max(np.abs(right))])
 	data_conv = np.column_stack((
-		convolve(data[:,0], left[:,0] / norm) + convolve(data[:,1], right[:,0] / norm),
-		convolve(data[:,0], left[:,1] / norm) + convolve(data[:,1], right[:,1] / norm),
+		convolve(data[:,0], left[:,0] / norm) \
+		+ convolve(data[:,1], right[:,0] / norm),
+		convolve(data[:,0], left[:,1] / norm) \
+		+ convolve(data[:,1], right[:,1] / norm),
 	))
 	out = (data_conv / np.max(np.abs(data_conv)) * 2 ** 15).astype('int16')
 	wavfile.write(output, fs, out)
