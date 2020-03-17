@@ -29,7 +29,7 @@ def sweep(fmin, fmax, T, fs, log):
               help='Sample rate in Hz.')
 @click.option('--log/--lin', default=True,
               help='Whether to cast a logarithmic or linear sweep.')
-@click.option('--channel', is_flag=True, default='m',
+@click.option('--channel', default='m',
               help='Either l for left, r for right or m for mono.')
 @click.option('--predelay', type=float, default=5.0,
               help='Predelay in seconds.')
